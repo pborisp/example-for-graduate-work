@@ -7,11 +7,11 @@ import lombok.*;
 @Getter
 @Setter
 @Data
-public class Register {
-    private String username;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private String phone;
-    private Role role;
+public class Comment {
+    private Long author;
+    private String authorImage;
+    private String authorFirstName;
+    private Long createdAt;
+    private Integer pk;
+    private String text;
 }

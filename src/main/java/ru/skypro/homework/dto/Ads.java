@@ -2,16 +2,14 @@ package ru.skypro.homework.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor //конструктор с аргументами
 @NoArgsConstructor  //пустой конструктор
 @Getter
 @Setter
 @Data
-public class Register {
-    private String username;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private String phone;
-    private Role role;
+public class Ads {
+    private Integer count;
+    private List<Ad> results;
 }
