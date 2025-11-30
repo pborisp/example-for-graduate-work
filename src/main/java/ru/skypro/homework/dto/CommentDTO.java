@@ -7,10 +7,11 @@ import lombok.*;
 @Getter
 @Setter
 @Data
-public class Ad {
+public class CommentDTO {
     private Long author;
-    private String image;
+    private String authorImage;
+    private String authorFirstName;
+    private Long createdAt;
     private Integer pk;
-    private Integer price;
-    private String title;
+    private String text;
 }

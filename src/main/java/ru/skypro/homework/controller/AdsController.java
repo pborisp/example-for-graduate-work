@@ -18,14 +18,14 @@ import ru.skypro.homework.dto.*;
 public class AdsController {
     @GetMapping
     @Operation(summary = "Получение всех объявлений")
-    public ResponseEntity<Ads> GetAds() {
-        return ResponseEntity.ok(new Ads());
+    public ResponseEntity<AdsDTO> GetAds() {
+        return ResponseEntity.ok(new AdsDTO());
     }
 
     @PostMapping(consumes = "multipart/form-data")
     @Operation(summary = "Добавление объявления")
-    public ResponseEntity<Ad> setAd(@RequestPart("properties") AdForUpdate properties, @RequestPart("image") MultipartFile image) {
-        return ResponseEntity.ok(new Ad());
+    public ResponseEntity<AdDTO> setAd(@RequestPart("properties") AdForUpdate properties, @RequestPart("image") MultipartFile image) {
+        return ResponseEntity.ok(new AdDTO());
     }
 
     @GetMapping("/{id}")
@@ -48,13 +48,13 @@ public class AdsController {
 
     @GetMapping("/me")
     @Operation(summary = "Получение объявлений авторизованного пользователя")
-    public ResponseEntity<Ads> getAds() {
-        return ResponseEntity.ok(new Ads());
+    public ResponseEntity<AdsDTO> getAds() {
+        return ResponseEntity.ok(new AdsDTO());
     }
 
     @PostMapping(value = "/{id}/image", consumes = "multipart/form-data")
     @Operation(summary = "Обновление картинки объявления")
     public ResponseEntity<String> UpdateImageAd(@RequestPart("id") Long id, @RequestPart("image") MultipartFile image) {
-        return ResponseEntity.ok(new Ad().getImage());
+        return ResponseEntity.ok(new AdDTO().getImage());
     }
 }

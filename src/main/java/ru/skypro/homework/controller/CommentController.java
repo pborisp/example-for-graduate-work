@@ -23,8 +23,8 @@ public class CommentController {
 
     @PostMapping(value = "/{id}/comments") //Добавление комментария к объявлению
     @Operation(summary = "Добавление комментария к объявлению")
-    public ResponseEntity<Comment> setComment(@PathVariable Long id, @RequestPart String text) {
-        return ResponseEntity.ok(new Comment());
+    public ResponseEntity<CommentDTO> setComment(@PathVariable Long id, @RequestPart String text) {
+        return ResponseEntity.ok(new CommentDTO());
     }
 
     @DeleteMapping("/{adId}/comments/{commentId}") //Удаление комментария
@@ -35,8 +35,8 @@ public class CommentController {
 
     @PatchMapping("/{adId}/comments/{commentId}") //Обновление комментария
     @Operation(summary = "Обновление комментария")
-    public ResponseEntity<Comment> updateComment(@PathVariable("adId") Long adid, @PathVariable("commentId") Long commentId, @RequestPart String text) {
-        return ResponseEntity.ok(new Comment());
+    public ResponseEntity<CommentDTO> updateComment(@PathVariable("adId") Long adid, @PathVariable("commentId") Long commentId, @RequestPart String text) {
+        return ResponseEntity.ok(new CommentDTO());
     }
 
 

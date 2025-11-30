@@ -7,8 +7,12 @@ import lombok.*;
 @Getter
 @Setter
 @Data
-public class UserForUpdate {
+public class UsersDTO {
+    private Long id;
+    private String email;
     private String firstName;
     private String lastName;
     private String phone;
+    private Role role;
+    private String image;
 }

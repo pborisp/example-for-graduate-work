@@ -19,20 +19,20 @@ public class UserController {
 
     @PostMapping("/set_password") // Обновление пароля
     @Operation(summary = "Обновление пароля")
-    public ResponseEntity<?> setPassword(@RequestBody Password password) {
+    public ResponseEntity<?> setPassword(@RequestBody PasswordDTO password) {
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/me") //Получение информации об авторизованном пользователе
     @Operation(summary = "Получение информации об авторизованном пользователе")
-    public ResponseEntity<User> getUser() {
-        return ResponseEntity.ok(new User());
+    public ResponseEntity<UsersDTO> getUser() {
+        return ResponseEntity.ok(new UsersDTO());
     }
 
     @PatchMapping("/me") //Обновление информации об авторизованном пользователе
     @Operation(summary = "Обновление информации об авторизованном пользователе")
-    public ResponseEntity<UserForUpdate> updateUser(@RequestBody UserForUpdate userForUpdate) {
-        return ResponseEntity.ok(new UserForUpdate());
+    public ResponseEntity<UserForUpdateDTO> updateUser(@RequestBody UserForUpdateDTO userForUpdate) {
+        return ResponseEntity.ok(new UserForUpdateDTO());
     }
 
     @PatchMapping(value = "/me/image", consumes = "multipart/form-data") //Обновление аватара авторизованного пользователя

@@ -7,7 +7,11 @@ import lombok.*;
 @Getter
 @Setter
 @Data
-public class Password {
-    private String currentPassword;
-    private String newPassword;
+public class RegisterDTO {
+    private String username;
+    private String password;
+    private String firstName;
+    private String lastName;
+    private String phone;
+    private Role role;
 }

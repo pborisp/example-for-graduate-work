@@ -7,11 +7,10 @@ import lombok.*;
 @Getter
 @Setter
 @Data
-public class Comment {
+public class AdDTO {
     private Long author;
-    private String authorImage;
-    private String authorFirstName;
-    private Long createdAt;
+    private String image;
     private Integer pk;
-    private String text;
+    private Integer price;
+    private String title;
 }
