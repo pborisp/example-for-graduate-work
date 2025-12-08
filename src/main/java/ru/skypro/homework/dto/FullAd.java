@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @Data
 public class FullAd {
-    private Integer pk;
+    private Long pk;
     private String authorFirstName;
     private String authorLastName;
     private String description;

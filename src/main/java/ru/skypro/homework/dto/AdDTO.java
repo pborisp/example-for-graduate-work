@@ -10,7 +10,7 @@ import lombok.*;
 public class AdDTO {
     private Long author;
     private String image;
-    private Integer pk;
+    private Long pk;
     private Integer price;
     private String title;
 }

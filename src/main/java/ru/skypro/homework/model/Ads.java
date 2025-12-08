@@ -18,7 +18,7 @@ import java.util.Objects;
 public class Ads {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer pk;
+    private Long pk;
 
     @Column(name = "image_url")
     private String image;

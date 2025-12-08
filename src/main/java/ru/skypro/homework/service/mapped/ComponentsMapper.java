@@ -7,7 +7,7 @@ import ru.skypro.homework.model.Comments;
 import java.time.ZoneOffset;
 
 @Component
-public class ComponentsMapped {
+public class ComponentsMapper {
     //преобразование CommentDTO в Comments - при регистрации
     public Comments toComments(CommentDTO dto) {
         Comments comments = new Comments();
