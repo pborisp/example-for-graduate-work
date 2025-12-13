@@ -1,90 +1,217 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  POM (Project Object Model) файл для проекта Ads Application
+  Версия Maven: 4.0.0
+
+  Проект: REST API приложение для управления объявлениями (Ads)
+  Технологии: Spring Boot, PostgreSQL, Spring Security, OpenAPI
+
+  Сборка: mvn clean package
+  Запуск: mvn spring-boot:run или java -jar target/ads-0.0.1-SNAPSHOT.jar
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion> <!-- Обязательная версия модели POM -->
+
+    <!--
+      Родительский Spring Boot POM
+      Наследует стандартные настройки, версии зависимостей и плагины
+      Spring Boot 2.7.15 - последний релиз ветки 2.7.x (поддержка до ноября 2025)
+    -->
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.15</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>2.7.15</version> <!-- Используйте 3.x.x для новых проектов -->
+        <relativePath/> <!-- Искать в репозитории, не в локальной файловой системе -->
     </parent>
 
-    <groupId>ru.skypro</groupId>
-    <artifactId>ads</artifactId>
-    <version>0.0.1-SNAPSHOT
-    </version
-    >
-    <name>Ads application</name>
-    <description>Application for managing ads</description>
+    <!-- ================================================================== -->
+    <!-- ПРОЕКТ: ИДЕНТИФИКАЦИЯ И МЕТАДАННЫЕ -->
+    <!-- ================================================================== -->
+
+    <!-- Идентификаторы проекта (GAV: GroupId, ArtifactId, Version) -->
+    <groupId>ru.skypro</groupId>         <!-- Домен/организация (обратный DNS) -->
+    <artifactId>ads</artifactId>         <!-- Имя артефакта (JAR файла) -->
+    <version>0.0.1-SNAPSHOT</version>    <!-- Версия (SNAPSHOT - разработка) -->
+
+    <!-- Метаданные проекта -->
+    <name>Ads application</name>         <!-- Человекочитаемое имя -->
+    <description>Application for managing ads</description>   <!-- Описание -->
+
+    <!-- ================================================================== -->
+    <!-- СВОЙСТВА ПРОЕКТА (CUSTOM PROPERTIES) -->
+    <!-- ================================================================== -->
 
     <properties>
+        <!--
+          Версия Java для компиляции и запуска
+          Java 11 - LTS версия (поддержка до сентября 2026)
+          Для новых проектов рекомендуется Java 17 или 21
+        -->
         <java.version>11</java.version>
+        <!--
+          Рекомендуется добавить версии зависимостей, которых нет в spring-boot-parent
+          Пример:
+          <springdoc-openapi-ui.version>1.7.0</springdoc-openapi-ui.version>
+          <liquibase.version>4.20.0</liquibase.version>
+        -->
     </properties>
 
+    <!-- ================================================================== -->
+    <!-- ЗАВИСИМОСТИ ПРОЕКТА (DEPENDENCIES) -->
+    <!-- ================================================================== -->
+
     <dependencies>
-        <!--suppress VulnerableLibrariesLocal -->
+        <!-- ========================== -->
+        <!-- SPRING BOOT STARTERS -->
+        <!-- ========================== -->
+
+        <!--
+          Spring Boot Web Starter: REST API, MVC, встроенный Tomcat
+          Включает: spring-web, spring-webmvc, jackson, validation, tomcat
+        -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <!-- suppress VulnerableLibrariesLocal - подавление предупреждения безопасности -->
         </dependency>
+        <!--
+          Spring Boot Data JPA Starter: работа с базами данных через JPA/Hibernate
+          Включает: spring-data-jpa, hibernate-core, spring-orm
+        -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+
+        <!--
+          Spring Boot Security Starter: аутентификация и авторизация
+          Включает: spring-security-core, spring-security-web, spring-security-config
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- ========================== -->
+        <!-- DATABASE -->
+        <!-- ========================== -->
+
+        <!--
+          PostgreSQL JDBC Driver: драйвер для подключения к PostgreSQL
+          runtime scope: нужен только во время выполнения, не для компиляции
+        -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <!--suppress VulnerableLibrariesLocal -->
+
+        <!--
+          H2 Database: in-memory база для тестов
+          test scope: только для тестового окружения
+        -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!--
+          Liquibase: управление миграциями базы данных
+          Автоматически подхватывается Spring Boot при наличии
+        -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+
+        <!-- ========================== -->
+        <!-- UTILITIES & TOOLS -->
+        <!-- ========================== -->
+
+        <!--
+          Lombok: генерация boilerplate кода (getters, setters, builders и т.д.)
+          optional=true: не транзитивно передаётся зависимым проектам
+          Требует установки плагина Lombok в IDE
+        -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
+        <!--
+          Hibernate Validator: валидация Bean Validation API
+          Включает: javax.validation, bean validation implementation
+        -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+
+        <!-- ========================== -->
+        <!-- API DOCUMENTATION -->
+        <!-- ========================== -->
+
+        <!--
+          SpringDoc OpenAPI UI: генерация Swagger/OpenAPI документации
+          Доступно по: /swagger-ui.html и /v3/api-docs
+          Версия явно указана, т.к. не входит в spring-boot-dependencies 2.7.x
+        -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.6.14</version> <!-- Для Spring Boot 3.x используйте springdoc-openapi-starter-webmvc-ui -->
+        </dependency>
+
+        <!-- ========================== -->
+        <!-- TESTING -->
+        <!-- ========================== -->
+
+        <!--
+          Spring Boot Test Starter: тестирование Spring приложений
+          Включает: junit, spring-test, assertj, mockito, jsonpath
+        -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!--
+          Spring Security Test: утилиты для тестирования безопасности
+          Позволяет тестировать защищённые эндпоинты
+        -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.6.14</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-        </dependency>
     </dependencies>
 
+    <!-- ================================================================== -->
+    <!-- СБОРКА ПРОЕКТА (BUILD CONFIGURATION) -->
+    <!-- ================================================================== -->
     <build>
         <plugins>
+
+            <!--
+              Spring Boot Maven Plugin: создание исполняемого JAR (fat jar)
+              Позволяет: spring-boot:run, spring-boot:build-image, spring-boot:repackage
+            -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <excludes>
+
+                        <!--
+                          Исключаем Lombok из fat JAR, т.к. он нужен только для компиляции
+                          Уменьшает размер итогового JAR файла
+                        -->
                         <exclude>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>

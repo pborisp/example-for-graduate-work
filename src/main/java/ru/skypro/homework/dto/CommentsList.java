@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @Data
-public class Comments {
+public class CommentsList {
     private Integer count;
     private List<CommentDTO> results;
 }

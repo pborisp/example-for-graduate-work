@@ -1,13 +1,37 @@
 package ru.skypro.homework.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import org.springframework.context.annotation.Primary;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
+/**
+ * Сущность "Комментарий" (Comment) - отзывы и обсуждения к объявлениям.
+ * <p>
+ * Позволяет пользователям оставлять комментарии к объявлениям, задавать вопросы,
+ * уточнять детали и вести обсуждения.
+ * </p>
+ *
+ * <p><b>Таблица в базе данных:</b> {@code comments}</p>
+ * <p><b>Индексы:</b> рекомендуется добавить индексы на ad_id и created_at</p>
+ *
+ * <p><b>Связи с другими сущностями:</b></p>
+ * <ul>
+ *   <li>N:1 с {@link Users} - каждый комментарий имеет одного автора</li>
+ *   <li>N:1 с {@link Ads} - каждый комментарий принадлежит одному объявлению</li>
+ * </ul>
+ *
+ * <p><b>Бизнес-правила:</b></p>
+ * <ul>
+ *   <li>Комментарий всегда должен иметь автора и объявление</li>
+ *   <li>Дата создания устанавливается автоматически при создании</li>
+ *   <li>При удалении автора все его комментарии удаляются (каскад через Users)</li>
+ *   <li>При удалении объявления все его комментарии удаляются (каскад через Ads)</li>
+ * </ul>
+ *
+ * @see Users
+ * @see Ads
+ */
 @Entity
 @Data
 @AllArgsConstructor
@@ -16,20 +40,94 @@ import java.util.Objects;
 @Setter
 @Table(name = "comments")
 public class Comments {
+
+    /**
+     * Уникальный идентификатор комментария.
+     * <p>
+     * Используется в API как {@code pk} (primary key).
+     * Автоматически генерируется базой данных с автоинкрементом.
+     * Это поле является первичным ключом таблицы.
+     * </p>
+     *
+     * <p><b>В API отображается как:</b> {@code pk}</p>
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer pk;
+    private Long pk;
 
+    /**
+     * Дата и время создания комментария.
+     * <p>
+     * Устанавливается автоматически при создании комментария.
+     * Используется для сортировки комментариев (сначала новые).
+     * Не может быть изменена после создания.
+     * </p>
+     *
+     * <p><b>В API отображается как:</b> {@code createdAt} (timestamp в миллисекундах)</p>
+     *
+     * <p><b>Особенности:</b></p>
+     * <ul>
+     *   <li>Значение по умолчанию: текущее время</li>
+     *   <li>Тип: {@link LocalDateTime} (лучше чем Date/Timestamp)</li>
+     *   <li>Формат в БД: TIMESTAMP или DATETIME</li>
+     * </ul>
+     */
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Column(name = "text")
+    /**
+     * Текст комментария.
+     * <p>
+     * Содержит сообщение пользователя.
+     * </p>
+     *
+     * <p><b>В API отображается как:</b> {@code text}</p>
+     *
+     * <p><b>Ограничения:</b></p>
+     * <ul>
+     *   <li>В текущей схеме нет ограничения длины</li>
+     *   <li>Ограничение NOT NULL (нельзя оставить пустой комментарий)</li>
+     * </ul>
+     */
+    @Column(name = "text", nullable = false, length = 1000)
     private String text;
 
+    /**
+     * Автор комментария.
+     * <p>
+     * Связь "многие-к-одному" с сущностью {@link Users}.
+     * Каждый комментарий принадлежит одному пользователю.
+     * Загружается лениво (LAZY) для оптимизации производительности.
+     * </p>
+     *
+     * <p><b>Внешний ключ:</b> {@code users_id} в таблице comments</p>
+     *
+     * <p><b>Каскадные операции:</b></p>
+     * <ul>
+     *   <li>Каскад настроен на стороне Users (при удалении пользователя удаляются его комментарии)</li>
+     *   <li>Здесь нет каскада, так как автор не должен удаляться при удалении комментария</li>
+     * </ul>
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id", nullable = false)
     private Users author;
 
+    /**
+     * Объявление, к которому относится комментарий.
+     * <p>
+     * Связь "многие-к-одному" с сущностью {@link Ads}.
+     * Каждый комментарий принадлежит одному объявлению.
+     * Загружается лениво (LAZY) для оптимизации производительности.
+     * </p>
+     *
+     * <p><b>Внешний ключ:</b> {@code ad_id} в таблице comments</p>
+     *
+     * <p><b>Каскадные операции:</b></p>
+     * <ul>
+     *   <li>Каскад настроен на стороне Ads (при удалении объявления удаляются его комментарии)</li>
+     *   <li>Здесь нет каскада, так как объявление не должно удаляться при удалении комментария</li>
+     * </ul>
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ad_id", nullable = false)
     private Ads ad;

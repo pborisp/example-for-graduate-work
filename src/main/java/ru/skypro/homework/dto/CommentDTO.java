@@ -12,6 +12,6 @@ public class CommentDTO {
     private String authorImage;
     private String authorFirstName;
     private Long createdAt;
-    private Integer pk;
+    private Long pk;
     private String text;
 }

@@ -1,3 +1,56 @@
+# ===================================================================
+# LIQUIBASE MASTER CHANGELOG FILE
+# ===================================================================
+# 
+# Описание: Главный файл миграций базы данных для приложения Ads
+# Технология: Liquibase 4.x
+# Формат: YAML (рекомендуемый для Spring Boot)
+# 
+# Назначение:
+# 1. Управление версиями схемы БД
+# 2. Организация миграций в хронологическом порядке
+# 3. Обеспечение повторяемости развертываний
+# 
+# Структура проекта:
+# src/main/resources/
+#   liquibase/
+#     changelog-master.yml     # этот файл
+#     scripts/
+#       user.sql               # SQL скрипт для таблицы пользователей
+#       ads.sql                # SQL скрипт для таблицы объявлений
+#       data/
+#         initial_data.sql     # Начальные данные
+# 
+# Использование:
+# - Автоматически применяется при запуске Spring Boot приложения
+# - Проверка статуса: http://localhost:8080/actuator/liquibase
+# - Ручной запуск: mvn liquibase:update
+# 
+# Правила именования файлов:
+# YYYYMMDD-HHMMSS-description.sql или Vx__description.sql
+# Пример: 20240115-143000-create-user-table.sql
+# 
+
 databaseChangeLog:
+  # Включаемые файлы с миграциями
+  # Порядок включения ВАЖЕН - определяет порядок применения миграций
+
   - include:
+      # Путь к файлу относительно classpath
       file: liquibase/scripts/user.sql
+      
+      # Относительный путь (можно использовать classpath: префикс)
+      # Альтернативы:
+      #   file: classpath:liquibase/scripts/user.sql
+      #   file: db/changelog/scripts/user.sql
+      
+      # Контекст выполнения (опционально)
+      # context: "dev,test"  # применяется только для указанных контекстов
+      # context: "!prod"     # не применяется в production
+      
+      # Автор изменения (можно указать здесь или в самом SQL файле)
+      # author: "ivanov_ai"
+      
+      # Логическое имя файла (для отображения в отчетах)
+      # logicalFilePath: "create-users-table"
+      
